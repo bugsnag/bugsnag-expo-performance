@@ -15,5 +15,30 @@
   },
   "bugs": {
     "url": "https://github.com/bugsnag/bugsnag-expo-performance/issues"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@bugsnag/react-native-performance": "^3.1.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^12.1.4",
+    "@types/node": "^18.11.18",
+    "@types/react": "^19.1.10",
+    "eslint": "^9.33.0",
+    "expo": "^53.0.20",
+    "expo-constants": "~18.0.8",
+    "jest": "^30.0.5",
+    "react": "19.0.0",
+    "react-native": "0.79.2",
+    "rollup": "^4.46.2",
+    "tslib": "^2.8.1",
+    "typescript": "^5.9.2"
+  },
+  "peerDependencies": {
+    "expo": "^54.0.0",
+    "expo-constants": "~18.0.8",
+    "react": "*"
   }
 }
