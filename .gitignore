@@ -1,5 +1,6 @@
 .rollup.cache
 build
+dist
 
 # Logs
 logs
