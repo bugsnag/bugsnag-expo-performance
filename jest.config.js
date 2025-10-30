@@ -10,6 +10,7 @@ const config = {
     '!src/**/*.d.ts',
     '!**/node_modules/**',
   ],
+  coverageReporters: ['json-summary', 'text'],
 }
 
 export default config
