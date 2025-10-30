@@ -9,7 +9,7 @@
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "rollup -c",
     "clean": "rm -rf dist"
   },
@@ -29,11 +29,13 @@
   "devDependencies": {
     "@biomejs/biome": "2.3.1",
     "@rollup/plugin-typescript": "^12.1.4",
+    "@types/jest": "^30.0.0",
     "@types/node": "^18.11.18",
     "@types/react": "^19.1.10",
-    "expo": "^53.0.20",
+    "expo": "^54.0.0",
     "expo-constants": "~18.0.8",
     "jest": "^30.0.5",
+    "jest-expo": "^54.0.13",
     "react": "19.0.0",
     "react-native": "0.79.2",
     "rollup": "^4.46.2",
