@@ -2,7 +2,7 @@
   "name": "@bugsnag/expo-performance",
   "private": true,
   "version": "0.1.0",
-  "description": "BugSnag performance monitoring for React Native",
+  "description": "BugSnag performance monitoring for Expo",
   "homepage": "https://www.bugsnag.com/",
   "license": "MIT",
   "type": "module",
