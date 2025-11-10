@@ -166,18 +166,24 @@ if (!process.env.SKIP_GENERATE_FIXTURE) {
 
   fs.writeFileSync(`${fixtureDir}/eas.json`, JSON.stringify(easConfig, null, 2))
 
-  // TODO: switch to blank template?
-  // // replace the fixture's tabs directory with our own routes
-  // // most of these are for expo router tests but need to be injected into the fixture
-  // // because expo-router is file-based
-  // const fixtureTabsDir = resolve(fixtureDir, 'app/(tabs)')
-  // fs.rmSync(fixtureTabsDir, { recursive: true, force: true })
+  // add the utils directory
+  const utilsDir = resolve(rootDir, `features/fixtures/replacements/utils`)
+  const fixtureUtilsDir = resolve(fixtureDir, 'utils')
+  fs.cpSync(utilsDir, fixtureUtilsDir, { recursive: true })
 
-  // const replacementTabsDir = resolve(
-  //   rootDir,
-  //   `test/react-native/features/fixtures/expo/tabs`,
-  // )
-  // fs.cpSync(replacementTabsDir, fixtureTabsDir, { recursive: true })
+  // replace the fixture's routes with our own
+  const fixtureTabsDir = resolve(fixtureDir, 'app/(tabs)')
+  const replacementTabsDir = resolve(
+    rootDir,
+    `features/fixtures/replacements/(tabs)`,
+  )
+
+  for (const file of fs.readdirSync(replacementTabsDir)) {
+    fs.copyFileSync(
+      resolve(replacementTabsDir, file),
+      resolve(fixtureTabsDir, file),
+    )
+  }
 
   // copy keystore to the fixture directory
   const keyStorePath = resolve(
