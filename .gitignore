@@ -76,8 +76,9 @@ verdaccio-config.yml
 #rbenv
 .ruby-version
 
-# Maze runner output
+# Maze runner
 maze_output.zip
+Gemfile.lock
 
 # React Native Android gradle files
 .gradle/
