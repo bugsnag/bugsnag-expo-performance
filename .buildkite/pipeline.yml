@@ -1,0 +1,126 @@
+agents:
+  queue: "opensource"
+
+steps:
+
+  #
+  # Test fixtures
+  #
+  - label: ':android: Build Expo APK'
+    key: "build-expo-apk"
+    timeout_in_minutes: 30
+    agents:
+      queue: macos-15
+    env:
+      JAVA_VERSION: "17"
+      NODE_VERSION: "22"
+      EXPO_VERSION: "54"
+      BUILD_ANDROID: "true"
+    artifact_paths:
+      - "features/fixtures/generated/54/test-fixture/output.apk"
+    commands:
+      - node features/scripts/generate-fixture.js
+    retry:
+      automatic:
+        - exit_status: "*"
+          limit: 1
+
+  - label: ':android: Build Expo IPA'
+    key: "build-expo-ipa"
+    timeout_in_minutes: 30
+    agents:
+      queue: macos-15
+    env:
+      NODE_VERSION: "22"
+      EXPO_VERSION: "54"
+      BUILD_IOS: "true"
+    artifact_paths:
+      - "features/fixtures/generated/54/test-fixture/output.ipa"
+    commands:
+      - bundle install
+      - node features/scripts/generate-fixture.js
+    retry:
+      automatic:
+        - exit_status: "*"
+          limit: 1
+
+  #
+  # End-to-end tests
+  #
+  - label: ":bitbar: :android: Expo Android end-to-end tests"
+    depends_on: "build-expo-apk"
+    timeout_in_minutes: 20
+    plugins:
+      artifacts#v1.9.0:
+        download: "features/fixtures/generated/54/test-fixture/output.apk"
+        upload:
+          - "./features/maze_output/failed/*"
+          - "./features/maze_output/maze_output.zip"
+      docker-compose#v4.7.0:
+        pull: expo-maze-runner
+        run: expo-maze-runner
+        service-ports: true
+        command:
+          - --app=/app/features/fixtures/generated/54/test-fixture/output.apk
+          - --farm=bb
+          - --device=ANDROID_13
+          - --a11y-locator
+          - --fail-fast
+          - --appium-version=1.22
+          - --no-tunnel
+          - --aws-public-ip
+      test-collector#v1.10.2:
+        files: "reports/TEST-*.xml"
+        format: "junit"
+        branch: "^main|next$$"
+        api-token-env-name: "REACT_NATIVE_PERFORMANCE_BUILDKITE_ANALYTICS_TOKEN"
+    env:
+      EXPO_VERSION: 54
+    retry:
+      manual:
+        permit_on_passed: true
+      automatic:
+        - exit_status: 103  # Appium session failed
+          limit: 2
+    concurrency: 25
+    concurrency_group: "bitbar"
+    concurrency_method: eager
+
+  - label: ":bitbar: :mac: Expo iOS end-to-end tests"
+    depends_on: "build-expo-ipa"
+    timeout_in_minutes: 20
+    plugins:
+      artifacts#v1.9.0:
+        download: "features/fixtures/generated/54/test-fixture/output.ipa"
+        upload:
+          - "./features/maze_output/failed/*"
+          - "./features/maze_output/maze_output.zip"
+      docker-compose#v4.12.0:
+        pull: expo-maze-runner
+        run: expo-maze-runner
+        service-ports: true
+        command:
+          - --app=/app/features/fixtures/generated/54/test-fixture/output.ipa
+          - --farm=bb
+          - --device=IOS_14|IOS_15|IOS_16|IOS_17|IOS_18|IOS_26
+          - --a11y-locator
+          - --fail-fast
+          - --appium-version=1.22
+          - --no-tunnel
+          - --aws-public-ip
+      test-collector#v1.10.2:
+        files: "reports/TEST-*.xml"
+        format: "junit"
+        branch: "^main|next$$"
+        api-token-env-name: "REACT_NATIVE_PERFORMANCE_BUILDKITE_ANALYTICS_TOKEN"
+    env:
+      EXPO_VERSION: 54
+    retry:
+      manual:
+        permit_on_passed: true
+      automatic:
+        - exit_status: 103  # Appium session failed
+          limit: 2
+    concurrency: 25
+    concurrency_group: "bitbar"
+    concurrency_method: eager
