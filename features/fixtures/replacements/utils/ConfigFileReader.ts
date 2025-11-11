@@ -3,10 +3,10 @@ import { Dirs, FileSystem } from 'react-native-file-access'
 
 const TIMEOUT = 60000
 
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export const getMazeRunnerAddress = async () => {
-  let configFilePath
+  let configFilePath: string
   const startTime = Date.now()
 
   // poll for the config file to exist

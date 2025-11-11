@@ -61,11 +61,7 @@ if (!process.env.SKIP_GENERATE_FIXTURE) {
   })
 
   // install the fixture dependencies using expo install
-  const installArgs = [
-    'expo',
-    'install',
-    ...fixtureDeps,
-  ]
+  const installArgs = ['expo', 'install', ...fixtureDeps]
   execFileSync('npx', installArgs, { cwd: fixtureDir, stdio: 'inherit' })
 
   // install the bugsnag-expo-performance tarball using npm
@@ -73,11 +69,7 @@ if (!process.env.SKIP_GENERATE_FIXTURE) {
     cwd: fixtureDir,
   })
 
-  const npmInstallArgs = [
-    'npm',
-    'install',
-    ...tarballs,
-  ]
+  const npmInstallArgs = ['npm', 'install', ...tarballs]
   execFileSync('npx', npmInstallArgs, { cwd: fixtureDir, stdio: 'inherit' })
 
   // modify the app.json file
