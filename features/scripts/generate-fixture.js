@@ -118,7 +118,7 @@ if (!process.env.SKIP_GENERATE_FIXTURE) {
   ])
 
   // set the Bugsnag API key and app version
-  appConfig.expo.version = '1.0.0'
+  appConfig.expo.version = '1.2.3'
   appConfig.expo.extra = {
     ...appConfig.expo.extra,
     bugsnag: {
