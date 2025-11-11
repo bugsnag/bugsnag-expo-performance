@@ -32,6 +32,7 @@ services:
     volumes:
       - ./build:/app/build
       - ./features:/app/features
+      - ./features/maze_output:/app/maze_output
       - /var/run/docker.sock:/var/run/docker.sock
       - ./reports/:/app/reports/
 
