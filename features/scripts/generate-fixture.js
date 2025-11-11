@@ -29,7 +29,7 @@ const fixtureDir = `${buildDir}/test-fixture`
 // Dependencies
 const fixtureDeps = [
   '@react-native-community/netinfo',
-  'expo-file-system',
+  'react-native-file-access',
   'expo-build-properties',
 ]
 
@@ -60,22 +60,25 @@ if (!process.env.SKIP_GENERATE_FIXTURE) {
     stdio: 'inherit',
   })
 
-  // install the fixture dependencies
+  // install the fixture dependencies using expo install
+  const installArgs = [
+    'expo',
+    'install',
+    ...fixtureDeps,
+  ]
+  execFileSync('npx', installArgs, { cwd: fixtureDir, stdio: 'inherit' })
+
+  // install the bugsnag-expo-performance tarball using npm
   const tarballs = fs.globSync('bugsnag-expo-performance-*.tgz', {
     cwd: fixtureDir,
   })
-  if (tarballs.length === 0) {
-    throw new Error('bugsnag-expo-performance-*.tgz file not found')
-  }
 
-  const installArgs = [
+  const npmInstallArgs = [
+    'npm',
     'install',
-    '--save',
-    '--no-audit',
-    ...fixtureDeps,
     ...tarballs,
   ]
-  execFileSync('npm', installArgs, { cwd: fixtureDir, stdio: 'inherit' })
+  execFileSync('npx', npmInstallArgs, { cwd: fixtureDir, stdio: 'inherit' })
 
   // modify the app.json file
   const appConfig = JSON.parse(
@@ -191,13 +194,6 @@ if (!process.env.SKIP_GENERATE_FIXTURE) {
     `features/fixtures/replacements/fakekeys.jks`,
   )
   fs.copyFileSync(keyStorePath, resolve(fixtureDir, 'fakekeys.jks'))
-
-  // TODO: is this needed?
-  // // add .npmrc
-  // fs.writeFileSync(
-  //   resolve(fixtureDir, '.npmrc'),
-  //   'registry=https://registry.npmjs.org/\n',
-  // )
 
   // copy credentials to the fixture directory
   const credentialsFiles = fs.readdirSync(process.env.EXPO_CREDENTIALS_DIR)
