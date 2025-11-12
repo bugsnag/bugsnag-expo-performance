@@ -9,7 +9,7 @@ export default function TabOneScreen() {
   const router = useRouter()
 
   useEffect(() => {
-    ;(async () => {
+    const initializeBugsnag = async () => {
       const mazeAddress = await getMazeRunnerAddress()
 
       BugsnagPerformance.start({
@@ -19,8 +19,10 @@ export default function TabOneScreen() {
       setTimeout(() => {
         router.navigate('./two')
       }, 250)
-    })()
-  }, [router.navigate])
+    }
+
+    initializeBugsnag()
+  }, [router])
 
   return (
     <View style={styles.container}>
