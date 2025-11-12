@@ -63,7 +63,7 @@ steps:
         command:
           - "--app=/app/features/fixtures/generated/54/test-fixture/output.apk"
           - "--farm=bb"
-          - "--device=ANDROID_13"
+          - "--device=ANDROID_13|ANDROID_14|ANDROID_15"
           - "--a11y-locator"
           - "--fail-fast"
           - "--appium-version=1.22"
