@@ -1,6 +1,5 @@
 {
   "name": "@bugsnag/expo-performance",
-  "private": true,
   "version": "0.1.0",
   "description": "BugSnag performance monitoring for Expo",
   "homepage": "https://www.bugsnag.com/",
@@ -21,6 +20,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bugsnag/bugsnag-expo-performance.git"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "bugs": {
     "url": "https://github.com/bugsnag/bugsnag-expo-performance/issues"
