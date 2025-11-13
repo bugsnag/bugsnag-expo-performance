@@ -7,7 +7,7 @@ error_missing_field () {
   exit 1
 }
 
-Ensure all required variables are set before doing any work
+# ensure all required variables are set before doing any work
 if [[ -z ${GITHUB_USER:-} ]]; then error_missing_field "GITHUB_USER"; fi
 if [[ -z ${GITHUB_ACCESS_TOKEN:-} ]]; then error_missing_field "GITHUB_ACCESS_TOKEN"; fi
 if [[ -z ${RELEASE_BRANCH:-} ]]; then error_missing_field "RELEASE_BRANCH"; fi
@@ -34,6 +34,8 @@ case $VERSION in
     ;;
 esac
 
+CURRENT_VERSION=$(npm pkg get version | tr -d '"')
+
 # increment package version
 if [ -z "${RETRY_PUBLISH:-}" ]; then
   npm version "$VERSION" --preid="$preid"
@@ -41,6 +43,22 @@ fi
 
 # build the package
 npm run build
+
+# ask for confirmation before proceeding with publish
+set +x  # disable trace output for cleaner prompt
+NEW_VERSION=$(npm pkg get version | tr -d '"')
+echo ""
+echo "New version: @bugsnag/expo-performance@$CURRENT_VERSION => v$NEW_VERSION"
+echo ""
+echo "This will be published with tag: $DIST_TAG"
+echo ""
+read -p "Do you want to proceed? (y/N) " -n 1 -r
+echo ""
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+  echo "Release cancelled."
+  exit 1
+fi
+set -x  # re-enable trace output
 
 # push version commit and tag
 git push --follow-tags
