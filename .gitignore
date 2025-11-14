@@ -92,3 +92,6 @@ features/fixtures/generated/
 # IDE files
 .idea/
 *.iml
+
+# Zscaler root CA
+zscaler-root-ca.crt

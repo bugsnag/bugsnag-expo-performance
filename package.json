@@ -1,6 +1,5 @@
 {
   "name": "@bugsnag/expo-performance",
-  "private": true,
   "version": "0.1.0",
   "description": "BugSnag performance monitoring for Expo",
   "homepage": "https://www.bugsnag.com/",
@@ -22,6 +21,9 @@
     "type": "git",
     "url": "git+https://github.com/bugsnag/bugsnag-expo-performance.git"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "bugs": {
     "url": "https://github.com/bugsnag/bugsnag-expo-performance/issues"
   },
@@ -29,7 +31,7 @@
     "dist"
   ],
   "dependencies": {
-    "@bugsnag/react-native-performance": "3.2.0-alpha.0"
+    "@bugsnag/react-native-performance": "^3.2.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.1",
