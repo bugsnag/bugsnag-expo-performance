@@ -11,7 +11,7 @@
 - get the pull request reviewed – all code changes should have been reviewed already, this should be a review of the integration of all changes to be shipped and the changelog
 - merge the PR
 
-⚠️ **Note**: Consider merging or cherry-picking the fix to other affected major version branches
+⚠️ **Note**: Consider merging or cherry-picking bug fixes to other affected major version branches
 
 ### New major release
 
@@ -28,7 +28,7 @@ When a new Expo SDK is released, we should also publish a matching major version
 - get the release PR reviewed
 - merge the PR
 
-The following digram demonstrates the flow of creating the required branches for new SDK release:
+The following diagram demonstrates the flow of creating the required branches for new SDK release:
 
 ```mermaid
 graph TD;
@@ -56,7 +56,7 @@ You are now ready to make the release. Releases are done using Docker. You do no
 
 Before publishing your release, you must first build the release container:
 
-`docker-compose build release`
+`docker compose build release`
 
 ### Publishing
 
@@ -68,7 +68,7 @@ GITHUB_ACCESS_TOKEN=<generate a personal access token> \
 RELEASE_BRANCH=<the branch to publish a new release from> \
 VERSION=[major | minor | patch] \
 DIST_TAG=latest
-  docker-compose run release
+  docker compose run release
 ```
 
 This process is interactive and will require you to confirm that you want to publish the changed packages. It will also prompt for 2FA.
@@ -117,7 +117,7 @@ GITHUB_ACCESS_TOKEN=<generate a personal access token> \
 RELEASE_BRANCH=<the branch to publish a new release from> \
 VERSION=preminor \
 DIST_TAG=beta \
-  docker-compose run release
+  docker compose run release
 ```
 
 This will create a version like `1.1.0-beta.0` and publish it to npm with the `beta` dist tag.
