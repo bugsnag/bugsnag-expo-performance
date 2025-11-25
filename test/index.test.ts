@@ -1,13 +1,20 @@
 import type { Clock, SpanContextStorage } from '@bugsnag/core-performance'
 import type { ReactNativeSpanFactory } from '@bugsnag/react-native-performance'
 
+const mockSingleton = {}
 const mockCreateReactNativeClient = jest.fn()
 const mockCreateDefaultPlatformExtensions = jest.fn()
+const mockRegisterClient = jest.fn()
 
-jest.mock('@bugsnag/react-native-performance', () => ({
-  createReactNativeClient: mockCreateReactNativeClient,
-  createDefaultPlatformExtensions: mockCreateDefaultPlatformExtensions,
-}))
+jest.mock('@bugsnag/react-native-performance', () => {
+  return {
+    __esModule: true,
+    createReactNativeClient: mockCreateReactNativeClient,
+    createDefaultPlatformExtensions: mockCreateDefaultPlatformExtensions,
+    registerClient: mockRegisterClient,
+    default: mockSingleton,
+  }
+})
 
 const mockSchema = {
   apiKey: {
@@ -39,6 +46,17 @@ describe('index', () => {
       schema: mockSchema,
       createPlatformExtensions: expect.any(Function),
     })
+  })
+
+  it('should call registerClient', () => {
+    require('../src/index')
+
+    expect(mockRegisterClient).toHaveBeenCalledTimes(1)
+  })
+
+  it('should re-export the default from react-native-performance (client proxy singleton)', () => {
+    const indexModule = require('../src/index')
+    expect(indexModule.default).toBe(mockSingleton)
   })
 
   it('should pass a createPlatformExtensions function that removes the attach method', () => {
