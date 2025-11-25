@@ -1,8 +1,16 @@
-import type { Clock, SpanContextStorage } from '@bugsnag/core-performance'
-import type { ReactNativeSpanFactory } from '@bugsnag/react-native-performance'
-import {
+import type {
+  BugsnagPerformance,
+  Clock,
+  SpanContextStorage,
+} from '@bugsnag/core-performance'
+import type {
+  ReactNativeConfiguration,
+  ReactNativeSpanFactory,
+} from '@bugsnag/react-native-performance'
+import ReactNativePerformance, {
   createDefaultPlatformExtensions,
   createReactNativeClient,
+  registerClient,
 } from '@bugsnag/react-native-performance'
 import { schema } from './config'
 
@@ -20,14 +28,22 @@ const createPlatformExtensions = (
     spanContextStorage,
   )
 
-  return {
-    ...rest,
-  }
+  return rest
 }
 
-const BugsnagPerformance = createReactNativeClient({
+type PlatformExtensions = ReturnType<typeof createPlatformExtensions>
+
+const expoClient = createReactNativeClient({
   schema,
   createPlatformExtensions,
 })
 
-export default BugsnagPerformance
+// Register the Expo client as the singleton instance.
+// This ensures that this client instance is used even when
+// BugsnagPerformance is imported from @bugsnag/react-native-performance
+registerClient(expoClient)
+
+export default ReactNativePerformance as BugsnagPerformance<
+  ReactNativeConfiguration,
+  PlatformExtensions
+>
