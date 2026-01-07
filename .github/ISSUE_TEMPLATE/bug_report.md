@@ -20,8 +20,8 @@ A clear and concise description of what the bug is.
 
 ### Environment
 * BugSnag Performance library version:
- * BugSnag Error Monitoring library version (if any):
- * Expo SDK version (e.g. SDK 54):
+* BugSnag Error Monitoring library version (if any):
+* Expo SDK version (e.g. SDK 54):
 * Device (e.g. iphonex):
 
 <!--

@@ -10,8 +10,8 @@ When contacting support, please include as much information as necessary, includ
 - expected/actual behaviour 
 
 * BugSnag Performance library version:
- * BugSnag Error Monitoring library version (if any):
- * Expo SDK version (e.g. SDK 54):
+* BugSnag Error Monitoring library version (if any):
+* Expo SDK version (e.g. SDK 54):
 * Device (e.g. iphonex):
 
 ## Bug or Feature Requests
