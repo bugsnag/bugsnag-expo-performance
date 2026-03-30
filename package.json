@@ -43,7 +43,7 @@
     "expo": "^54.0.0",
     "expo-constants": "~18.0.8",
     "jest": "^30.0.5",
-    "jest-expo": "^54.0.13",
+    "jest-expo": "^54.0.17",
     "react": "19.0.0",
     "react-native": "0.79.2",
     "rollup": "^4.46.2",
