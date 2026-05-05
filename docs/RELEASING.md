@@ -48,6 +48,7 @@ You are now ready to make the release. Releases are done using Docker. You do no
 
 - You will need to clone the repository and have Docker running on your local machine.
 - Ensure you are logged in to npm and that you have access to publish in the `@bugsnag` namespace on npm
+- Generate a [granular access token](https://www.npmjs.com/settings/{username}/tokens/granular-access-tokens/new) on  NPM to bypass 2FA and store it somewhere secure
 - Ensure your `.gitconfig` file in your home directory is configured to contain your name and email address
 - Generate a [personal access token](https://github.com/settings/tokens/new) on GitHub and store it somewhere secure
 - Add the `zscaler-root-ca.crt` certificate to the root of the repository (see Zscaler documentation for details)
@@ -65,13 +66,14 @@ You may want to consider shipping a [prerelease](#prerelease) to aid testing the
 ```sh
 GITHUB_USER=<your github username> \
 GITHUB_ACCESS_TOKEN=<generate a personal access token> \
+NPM_TOKEN=<generate a personal granular access token> \
 RELEASE_BRANCH=<the branch to publish a new release from> \
 VERSION=[major | minor | patch] \
 DIST_TAG=latest
   docker compose run release
 ```
 
-This process is interactive and will require you to confirm that you want to publish the changed packages. It will also prompt for 2FA.
+This process is interactive and will require you to confirm that you want to publish the changed packages.
 
 **Note**: if a prerelease was made, to graduate it into a normal release you will need to use `patch` as the version.
 
@@ -114,6 +116,7 @@ For example, to publish a prerelease with the `beta` dist tag:
 ```
 GITHUB_USER=<your github username> \
 GITHUB_ACCESS_TOKEN=<generate a personal access token> \
+NPM_TOKEN=<generate a personal granular access token> \
 RELEASE_BRANCH=<the branch to publish a new release from> \
 VERSION=preminor \
 DIST_TAG=beta \
