@@ -48,7 +48,7 @@ You are now ready to make the release. Releases are done using Docker. You do no
 
 - You will need to clone the repository and have Docker running on your local machine.
 - Ensure you are logged in to npm and that you have access to publish in the `@bugsnag` namespace on npm
-- Generate a [granular access token](https://www.npmjs.com/settings/{username}/tokens/granular-access-tokens/new) on  NPM to bypass 2FA and store it somewhere secure
+- Generate a [granular access token](https://www.npmjs.com/settings/{username}/tokens/granular-access-tokens/new) on NPM as a fallback mechanism when 2FA is not feasible and store it somewhere secure
 - Ensure your `.gitconfig` file in your home directory is configured to contain your name and email address
 - Generate a [personal access token](https://github.com/settings/tokens/new) on GitHub and store it somewhere secure
 - Add the `zscaler-root-ca.crt` certificate to the root of the repository (see Zscaler documentation for details)
