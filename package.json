@@ -64,8 +64,9 @@
     "tar": "^7.5.10",
     "node-forge": "^1.4.0",
     "minimatch@10.2.1": "10.2.6",
-    "brace-expansion": "5.0.7",
-    "postcss": "8.5.12",
+    "brace-expansion@^2.0.0": "2.1.4",
+    "brace-expansion@^5.0.0": "5.0.9",
+    "postcss": "^8.5.23",
     "shell-quote": "1.9.0",
     "js-yaml": "4.3.0"
   }
