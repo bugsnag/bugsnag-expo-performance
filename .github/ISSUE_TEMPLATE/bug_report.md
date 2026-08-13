@@ -21,7 +21,7 @@ A clear and concise description of what the bug is.
 ### Environment
 * BugSnag Performance library version:
 * BugSnag Error Monitoring library version (if any):
-* Expo SDK version (e.g. SDK 54):
+* Expo SDK version (e.g. SDK 54, 55, 56, or 57):
 * Device (e.g. iphonex):
 
 <!--
