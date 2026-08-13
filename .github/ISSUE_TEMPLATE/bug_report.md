@@ -7,21 +7,18 @@ assignees: ''
 
 ---
 
-<!-- Before raising, please check if somebody else has already reported your issue. -->
+<!-- Before raising, please check whether somebody else has already reported your issue. -->
 
 ### Describe the bug
-
 A clear and concise description of what the bug is.
 
 ### Steps to reproduce
-
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
 4. See error
 
 ### Environment
-
 * BugSnag Performance library version:
 * BugSnag Error Monitoring library version (if any):
 * Expo SDK version (e.g. SDK 54):
@@ -35,8 +32,8 @@ A clear and concise description of what the bug is.
 
 ### Example Repo <!-- Option 1 -->
 
-* [ ] Create a minimal repository that can reproduce the issue
-* [ ] Link to it here:
+- [ ] Create a minimal repository that can reproduce the issue
+- [ ] Link to it here:
 
 ### Example code snippet <!-- Option 2 -->
 
@@ -50,5 +47,4 @@ A clear and concise description of what the bug is.
 ```
 
 ```
-
 </details>
