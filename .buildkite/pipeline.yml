@@ -14,10 +14,10 @@ steps:
     env:
       JAVA_VERSION: "17"
       NODE_VERSION: "22"
-      EXPO_VERSION: "54"
+      EXPO_VERSION: "57"
       BUILD_ANDROID: "true"
     artifact_paths:
-      - "features/fixtures/generated/54/test-fixture/output.apk"
+      - "features/fixtures/generated/57/test-fixture/output.apk"
     commands:
       - "node features/scripts/generate-fixture.js"
     retry:
@@ -32,10 +32,10 @@ steps:
       queue: "macos-15"
     env:
       NODE_VERSION: "22"
-      EXPO_VERSION: "54"
+      EXPO_VERSION: "57"
       BUILD_IOS: "true"
     artifact_paths:
-      - "features/fixtures/generated/54/test-fixture/output.ipa"
+      - "features/fixtures/generated/57/test-fixture/output.ipa"
     commands:
       - "bundle install"
       - "node features/scripts/generate-fixture.js"
@@ -52,7 +52,7 @@ steps:
     timeout_in_minutes: 20
     plugins:
       artifacts#v1.9.0:
-        download: "features/fixtures/generated/54/test-fixture/output.apk"
+        download: "features/fixtures/generated/57/test-fixture/output.apk"
         upload:
           - "./features/maze_output/failed/*"
           - "./features/maze_output/maze_output.zip"
@@ -61,7 +61,7 @@ steps:
         run: "expo-maze-runner"
         service-ports: true
         command:
-          - "--app=/app/features/fixtures/generated/54/test-fixture/output.apk"
+          - "--app=/app/features/fixtures/generated/57/test-fixture/output.apk"
           - "--farm=bb"
           - "--device=ANDROID_13|ANDROID_14|ANDROID_15"
           - "--a11y-locator"
@@ -70,7 +70,7 @@ steps:
           - "--no-tunnel"
           - "--aws-public-ip"
     env:
-      EXPO_VERSION: 54
+      EXPO_VERSION: 57
       automatic:
         - exit_status: 103  # Appium session failed
           limit: 2
@@ -83,7 +83,7 @@ steps:
     timeout_in_minutes: 20
     plugins:
       artifacts#v1.9.0:
-        download: "features/fixtures/generated/54/test-fixture/output.ipa"
+        download: "features/fixtures/generated/57/test-fixture/output.ipa"
         upload:
           - "./features/maze_output/failed/*"
           - "./features/maze_output/maze_output.zip"
@@ -92,7 +92,7 @@ steps:
         run: "expo-maze-runner"
         service-ports: true
         command:
-          - "--app=/app/features/fixtures/generated/54/test-fixture/output.ipa"
+          - "--app=/app/features/fixtures/generated/57/test-fixture/output.ipa"
           - "--farm=bb"
           - "--device=IOS_14|IOS_15|IOS_16|IOS_17|IOS_18|IOS_26"
           - "--a11y-locator"
@@ -101,7 +101,7 @@ steps:
           - "--no-tunnel"
           - "--aws-public-ip"
     env:
-      EXPO_VERSION: 54
+      EXPO_VERSION: 57
       automatic:
         - exit_status: 103  # Appium session failed
           limit: 2
