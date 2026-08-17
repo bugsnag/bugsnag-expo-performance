@@ -10,7 +10,7 @@ steps:
     key: "build-expo-apk"
     timeout_in_minutes: 30
     agents:
-      queue: "macos-15"
+      queue: "macos-26"
     env:
       JAVA_VERSION: "17"
       NODE_VERSION: "22"
@@ -29,7 +29,7 @@ steps:
     key: "build-expo-ipa"
     timeout_in_minutes: 30
     agents:
-      queue: "macos-15"
+      queue: "macos-26"
     env:
       NODE_VERSION: "22"
       EXPO_VERSION: "57"
