@@ -1,6 +1,6 @@
 # Changelog
 
-## [57.0.0] (2025-08-18)
+## [57.0.0] (2025-08-19)
 
 - Support Expo SDK 55, 56, and 57 in a single package release.
 
