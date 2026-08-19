@@ -1,6 +1,6 @@
 {
   "name": "@bugsnag/expo-performance",
-  "version": "56.0.0",
+  "version": "57.0.0",
   "description": "BugSnag performance monitoring for Expo",
   "homepage": "https://www.bugsnag.com/",
   "license": "MIT",
