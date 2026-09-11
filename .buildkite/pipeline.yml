@@ -25,7 +25,7 @@ steps:
         - exit_status: "*"
           limit: 1
 
-  - label: ":android: Build Expo IPA"
+  - label: ":ios: Build Expo IPA"
     key: "build-expo-ipa"
     timeout_in_minutes: 30
     agents:
@@ -37,6 +37,8 @@ steps:
     artifact_paths:
       - "features/fixtures/generated/57/test-fixture/output.ipa"
     commands:
+      - "gem uninstall json -v '>= 3.0.0' --all --executables --force || true"
+      - "gem install json -v '2.10.1' --no-document"
       - "bundle install"
       - "node features/scripts/generate-fixture.js"
     retry:
