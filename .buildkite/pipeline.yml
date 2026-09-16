@@ -66,6 +66,7 @@ steps:
           - "--app=/app/features/fixtures/generated/57/test-fixture/output.apk"
           - "--farm=bb"
           - "--device=ANDROID_13|ANDROID_14|ANDROID_15"
+          - "--app-package=com.bugsnag.fixtures.expoperformance"
           - "--a11y-locator"
           - "--fail-fast"
           - "--appium-version=2.19"
