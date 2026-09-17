@@ -58,7 +58,7 @@ steps:
         upload:
           - "./features/maze_output/failed/*"
           - "./features/maze_output/maze_output.zip"
-      docker-compose#v4.7.0:
+      docker-compose#v4.12.0:
         pull: "expo-maze-runner"
         run: "expo-maze-runner"
         service-ports: true
@@ -69,10 +69,9 @@ steps:
           - "--a11y-locator"
           - "--fail-fast"
           - "--appium-version=2.19"
-          - "--app-package=com.bugsnag.expo.fixture"
-          - "--app-activity=com.bugsnag.expo.fixture.MainActivity"
           - "--no-tunnel"
           - "--aws-public-ip"
+          - '--capabilities={"appium:appPackage":"com.bugsnag.expo.fixture","appium:appActivity":"com.bugsnag.expo.fixture.MainActivity","appium:appWaitActivity":"*"}'
     env:
       EXPO_VERSION: 57
     retry:
