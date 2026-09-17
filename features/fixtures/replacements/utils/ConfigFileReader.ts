@@ -31,11 +31,11 @@ export const getMazeRunnerAddress = async () => {
             `[BugsnagPerformance] found config file at '${configFilePath}'. contents: ${configFile}`,
           )
           const config = JSON.parse(configFile)
-          if (config && config.maze_address) {
+          if (config?.maze_address) {
             return `${config.maze_address}`
           }
         }
-      } catch (err) {
+      } catch (_err) {
         // Continue searching alternative accessible directories
       }
     }
