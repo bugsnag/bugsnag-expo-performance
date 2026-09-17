@@ -2,6 +2,7 @@ import { Platform } from 'react-native'
 import { Dirs, FileSystem } from 'react-native-file-access'
 
 const TIMEOUT = 60000
+
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export const getMazeRunnerAddress = async () => {
@@ -30,11 +31,11 @@ export const getMazeRunnerAddress = async () => {
             `[BugsnagPerformance] found config file at '${configFilePath}'. contents: ${configFile}`,
           )
           const config = JSON.parse(configFile)
-          if (config?.maze_address) {
+          if (config && config.maze_address) {
             return `${config.maze_address}`
           }
         }
-      } catch (_err) {
+      } catch (err) {
         // Continue searching alternative accessible directories
       }
     }
