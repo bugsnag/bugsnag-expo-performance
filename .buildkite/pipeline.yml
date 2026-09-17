@@ -69,11 +69,12 @@ steps:
           - "--a11y-locator"
           - "--fail-fast"
           - "--appium-version=2.19"
-          - '--capabilities={"appium:appPackage":"com.bugsnag.fixtures.expoperformance","appium:appActivity":".MainActivity"}'
           - "--no-tunnel"
           - "--aws-public-ip"
+          - '--capabilities={"appium:appPackage":"com.bugsnag.expo.fixture","appium:appActivity":"com.bugsnag.expo.fixture.MainActivity","appium:appWaitActivity":"*"}'
     env:
       EXPO_VERSION: 57
+    retry:
       automatic:
         - exit_status: 103  # Appium session failed
           limit: 2
@@ -103,8 +104,10 @@ steps:
           - "--appium-version=2.19"
           - "--no-tunnel"
           - "--aws-public-ip"
+          - '--capabilities={"appium:bundleId":"com.bugsnag.expo.fixture"}'
     env:
       EXPO_VERSION: 57
+    retry:
       automatic:
         - exit_status: 103  # Appium session failed
           limit: 2
