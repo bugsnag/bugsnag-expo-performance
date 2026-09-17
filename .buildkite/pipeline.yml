@@ -69,9 +69,10 @@ steps:
           - "--a11y-locator"
           - "--fail-fast"
           - "--appium-version=2.19"
+          - "--app-package=com.bugsnag.expo.fixture"
+          - "--app-activity=com.bugsnag.expo.fixture.MainActivity"
           - "--no-tunnel"
           - "--aws-public-ip"
-          - '--capabilities={"appium:appPackage":"com.bugsnag.expo.fixture","appium:appActivity":"com.bugsnag.expo.fixture.MainActivity","appium:appWaitActivity":"*"}'
     env:
       EXPO_VERSION: 57
     retry:
