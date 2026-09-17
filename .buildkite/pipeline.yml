@@ -25,7 +25,7 @@ steps:
         - exit_status: "*"
           limit: 1
 
-  - label: ":android: Build Expo IPA"
+  - label: ":ios: Build Expo IPA"
     key: "build-expo-ipa"
     timeout_in_minutes: 30
     agents:
@@ -37,6 +37,8 @@ steps:
     artifact_paths:
       - "features/fixtures/generated/57/test-fixture/output.ipa"
     commands:
+      - "gem uninstall json -v '>= 3.0.0' --all --executables --force || true"
+      - "gem install json -v '2.10.1' --no-document"
       - "bundle install"
       - "node features/scripts/generate-fixture.js"
     retry:
@@ -56,7 +58,7 @@ steps:
         upload:
           - "./features/maze_output/failed/*"
           - "./features/maze_output/maze_output.zip"
-      docker-compose#v4.7.0:
+      docker-compose#v4.12.0:
         pull: "expo-maze-runner"
         run: "expo-maze-runner"
         service-ports: true
@@ -66,11 +68,13 @@ steps:
           - "--device=ANDROID_13|ANDROID_14|ANDROID_15"
           - "--a11y-locator"
           - "--fail-fast"
-          - "--appium-version=1.22"
+          - "--appium-version=2.19"
           - "--no-tunnel"
           - "--aws-public-ip"
+          - '--capabilities={"appium:appPackage":"com.bugsnag.expo.fixture","appium:appActivity":"com.bugsnag.expo.fixture.MainActivity","appium:appWaitActivity":"*"}'
     env:
       EXPO_VERSION: 57
+    retry:
       automatic:
         - exit_status: 103  # Appium session failed
           limit: 2
@@ -97,11 +101,13 @@ steps:
           - "--device=IOS_14|IOS_15|IOS_16|IOS_17|IOS_18|IOS_26"
           - "--a11y-locator"
           - "--fail-fast"
-          - "--appium-version=1.22"
+          - "--appium-version=2.19"
           - "--no-tunnel"
           - "--aws-public-ip"
+          - '--capabilities={"appium:bundleId":"com.bugsnag.expo.fixture"}'
     env:
       EXPO_VERSION: 57
+    retry:
       automatic:
         - exit_status: 103  # Appium session failed
           limit: 2

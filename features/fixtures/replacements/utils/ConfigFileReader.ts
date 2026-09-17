@@ -6,30 +6,45 @@ const TIMEOUT = 60000
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export const getMazeRunnerAddress = async () => {
-  let configFilePath: string
   const startTime = Date.now()
 
-  // poll for the config file to exist
   while (Date.now() - startTime < TIMEOUT) {
-    const configFileDir =
-      Platform.OS === 'android' ? '/data/local/tmp' : Dirs.DocumentDir
-    configFilePath = `${configFileDir}/fixture_config.json`
-    const configFileExists = await FileSystem.exists(configFilePath)
+    const candidateDirs =
+      Platform.OS === 'android'
+        ? [
+            Dirs.DocumentDir,
+            Dirs.CacheDir,
+            '/sdcard/Android/data/com.bugsnag.expo.fixture/files',
+            '/data/local/tmp',
+          ]
+        : [Dirs.DocumentDir]
 
-    if (configFileExists) {
-      const configFile = await FileSystem.readFile(configFilePath)
-      console.error(
-        `[BugsnagPerformance] found config file at '${configFilePath}'. contents: ${configFile}`,
-      )
-      const config = JSON.parse(configFile)
-      return `${config.maze_address}`
+    for (const dir of candidateDirs) {
+      const configFilePath = `${dir}/fixture_config.json`
+
+      try {
+        const configFileExists = await FileSystem.exists(configFilePath)
+
+        if (configFileExists) {
+          const configFile = await FileSystem.readFile(configFilePath)
+          console.error(
+            `[BugsnagPerformance] found config file at '${configFilePath}'. contents: ${configFile}`,
+          )
+          const config = JSON.parse(configFile)
+          if (config?.maze_address) {
+            return `${config.maze_address}`
+          }
+        }
+      } catch (_err) {
+        // Continue searching alternative accessible directories
+      }
     }
 
     await delay(500)
   }
 
   console.error(
-    `[BugsnagPerformance] no config file found at ${configFilePath}, falling back to 'localhost:9339'`,
+    `[BugsnagPerformance] no config file found across candidate directories within ${TIMEOUT}ms, falling back to 'localhost:9339'`,
   )
   return 'localhost:9339'
 }
