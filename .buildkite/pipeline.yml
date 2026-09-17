@@ -69,7 +69,8 @@ steps:
           - "--a11y-locator"
           - "--fail-fast"
           - "--appium-version=2.19"
-          - "--app-id=com.bugsnag.fixtures.expoperformance"
+          - "--app-package=com.bugsnag.fixtures.expoperformance"
+          - "--app-activity=.MainActivity"
           - "--no-tunnel"
           - "--aws-public-ip"
     env:
