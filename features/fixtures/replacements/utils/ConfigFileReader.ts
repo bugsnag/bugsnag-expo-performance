@@ -1,64 +1,62 @@
 import { Platform } from 'react-native'
 import { Dirs, FileSystem } from 'react-native-file-access'
 
-const TIMEOUT = 5000
+const TIMEOUT = 60000
+const POLL_INTERVAL = 500
+const CONFIG_FILE_NAME = 'fixture_config.json'
+const FALLBACK_ADDRESS = 'localhost:9339'
+
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
-export const getMazeRunnerAddress = async (): Promise<string> => {
+// Maze Runner writes the config file to the app's documents directory on iOS. On Android it uses
+// '/data/local/tmp' when 'Maze.config.android_app_files_directory' is set (as it is for BitBar in
+// features/support/env.rb) and the app's external files directory otherwise, so check both.
+const getCandidateDirectories = () =>
+  Platform.OS === 'android'
+    ? ['/data/local/tmp', '/sdcard/Android/data/com.bugsnag.expo.fixture/files']
+    : [Dirs.DocumentDir]
+
+const readMazeRunnerAddress = async (directory: string) => {
+  const configFilePath = `${directory}/${CONFIG_FILE_NAME}`
+
+  try {
+    if (!(await FileSystem.exists(configFilePath))) {
+      return undefined
+    }
+
+    const configFile = await FileSystem.readFile(configFilePath)
+    console.error(
+      `[BugsnagPerformance] found config file at '${configFilePath}'. contents: ${configFile}`,
+    )
+
+    const config = JSON.parse(configFile)
+    return config?.maze_address ? `${config.maze_address}` : undefined
+  } catch (_err) {
+    // This directory is not readable on this device, try the next candidate
+    return undefined
+  }
+}
+
+export const getMazeRunnerAddress = async () => {
   const startTime = Date.now()
 
-  const candidateDirs =
-    Platform.OS === 'android'
-      ? [
-          '/sdcard/Android/data/com.bugsnag.expo.fixture/files',
-          Dirs.DocumentDir,
-          Dirs.CacheDir,
-          '/sdcard',
-          '/storage/emulated/0',
-          '/data/local/tmp',
-        ].filter(Boolean)
-      : [Dirs.DocumentDir, Dirs.CacheDir]
-
-  const candidateFiles = ['fixture_config.json', 'maze_address', 'bs-host.json']
-
   while (Date.now() - startTime < TIMEOUT) {
-    for (const dir of candidateDirs) {
-      for (const fileName of candidateFiles) {
-        const configFilePath = `${dir}/${fileName}`
+    for (const directory of getCandidateDirectories()) {
+      const mazeAddress = await readMazeRunnerAddress(directory)
 
-        try {
-          const configFileExists = await FileSystem.exists(configFilePath)
-
-          if (configFileExists) {
-            const contents = (await FileSystem.readFile(configFilePath)).trim()
-            console.error(
-              `[BugsnagPerformance] found config file at '${configFilePath}': ${contents}`,
-            )
-
-            // Attempt JSON parse first (fixture_config.json)
-            try {
-              const parsed = JSON.parse(contents)
-              if (parsed?.maze_address) {
-                return `${parsed.maze_address}`
-              }
-            } catch {
-              // Plain-text address fallback (maze_address file)
-              if (contents.length > 0) {
-                return contents.replace(/^https?:\/\//, '').replace(/\/$/, '')
-              }
-            }
-          }
-        } catch (_err) {
-          // Continue searching remaining candidate paths
-        }
+      if (mazeAddress) {
+        console.error(
+          `[BugsnagPerformance] using Maze Runner address '${mazeAddress}'`,
+        )
+        return mazeAddress
       }
     }
 
-    await delay(300)
+    await delay(POLL_INTERVAL)
   }
 
   console.error(
-    `[BugsnagPerformance] no config file found within ${TIMEOUT}ms across candidate directories, falling back to 'localhost:9339'`,
+    `[BugsnagPerformance] no config file found across candidate directories within ${TIMEOUT}ms, falling back to '${FALLBACK_ADDRESS}'`,
   )
-  return 'localhost:9339'
+  return FALLBACK_ADDRESS
 }
