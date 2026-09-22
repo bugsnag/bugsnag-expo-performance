@@ -3,7 +3,6 @@
 ## [57.0.1] (2025-09-22)  
 
 - Fixed vurnabilities issues.
-- Updated end-to-end test infrastructure and pipeline configurations.
 
 ## [57.0.0] (2025-08-19)
 
