@@ -2,7 +2,7 @@
 
 ## [57.0.1] (2025-09-23)  
 
-- Fixed vurnabilities issues.
+- Fixed vulnerability issues.
 
 ## [57.0.0] (2025-08-19)
 
