@@ -92,7 +92,6 @@ if (!process.env.SKIP_GENERATE_FIXTURE) {
     ...appConfig.expo.android,
     package: 'com.bugsnag.expo.fixture',
     versionCode: 1,
-    usesCleartextTraffic: true,
     permissions: ['INTERNET'],
     config: {
       googleMaps: {
