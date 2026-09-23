@@ -1,6 +1,6 @@
 # Changelog
 
-## [57.0.1] (2025-09-22)  
+## [57.0.1] (2025-09-23)  
 
 - Fixed vurnabilities issues.
 
