@@ -76,6 +76,7 @@ if (!process.env.SKIP_GENERATE_FIXTURE) {
   const appConfig = JSON.parse(
     fs.readFileSync(`${fixtureDir}/app.json`, 'utf8'),
   )
+
   appConfig.expo.ios = {
     ...appConfig.expo.ios,
     bundleIdentifier: 'com.bugsnag.expo.fixture',
@@ -99,7 +100,8 @@ if (!process.env.SKIP_GENERATE_FIXTURE) {
     },
   }
 
-  // set usesCleartextTraffic to true for Android
+  // set usesCleartextTraffic to true for Android via expo-build-properties
+  appConfig.expo.plugins = appConfig.expo.plugins || []
   appConfig.expo.plugins.push([
     'expo-build-properties',
     {
