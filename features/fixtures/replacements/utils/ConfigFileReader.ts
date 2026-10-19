@@ -7,6 +7,7 @@ const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export const getMazeRunnerAddress = async () => {
   const startTime = Date.now()
+  const reportedErrors = new Set<string>()
 
   while (Date.now() - startTime < TIMEOUT) {
     const candidateDirs =
@@ -35,8 +36,13 @@ export const getMazeRunnerAddress = async () => {
             return `${config.maze_address}`
           }
         }
-      } catch (_err) {
-        // Continue searching alternative accessible directories
+      } catch (err) {
+        if (!reportedErrors.has(configFilePath)) {
+          reportedErrors.add(configFilePath)
+          console.error(
+            `[BugsnagPerformance] failed to read '${configFilePath}': ${err}`,
+          )
+        }
       }
     }
 
