@@ -2,6 +2,8 @@ import { Platform } from 'react-native'
 import { Dirs, FileSystem } from 'react-native-file-access'
 
 const TIMEOUT = 60000
+// Shared farm devices keep /data/local/tmp between sessions, so older files may belong to a previous run
+const MAX_CONFIG_AGE_BEFORE_START = 60000
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
@@ -27,6 +29,18 @@ export const getMazeRunnerAddress = async () => {
         const configFileExists = await FileSystem.exists(configFilePath)
 
         if (configFileExists) {
+          const { lastModified } = await FileSystem.stat(configFilePath)
+          if (lastModified < startTime - MAX_CONFIG_AGE_BEFORE_START) {
+            const staleKey = `stale:${configFilePath}`
+            if (!reportedErrors.has(staleKey)) {
+              reportedErrors.add(staleKey)
+              console.error(
+                `[BugsnagPerformance] ignoring stale config file at '${configFilePath}' (lastModified ${new Date(lastModified).toISOString()})`,
+              )
+            }
+            continue
+          }
+
           const configFile = await FileSystem.readFile(configFilePath)
           console.error(
             `[BugsnagPerformance] found config file at '${configFilePath}'. contents: ${configFile}`,
