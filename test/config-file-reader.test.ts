@@ -7,7 +7,7 @@ jest.mock(
   'react-native-file-access',
   () => ({
     Dirs: { DocumentDir: '/app/Documents' },
-    FileSystem: { exists: jest.fn(), readFile: jest.fn() },
+    FileSystem: { exists: jest.fn(), stat: jest.fn(), readFile: jest.fn() },
   }),
   { virtual: true },
 )
@@ -22,12 +22,15 @@ const setPlatform = (os: string) => {
 }
 
 const mockExists = FileSystem.exists as jest.Mock
+const mockStat = FileSystem.stat as jest.Mock
 const mockReadFile = FileSystem.readFile as jest.Mock
 
 describe('getMazeRunnerAddress', () => {
   beforeEach(() => {
     jest.restoreAllMocks()
     mockExists.mockReset()
+    mockStat.mockReset()
+    mockStat.mockResolvedValue({ lastModified: Date.now() })
     mockReadFile.mockReset()
     setPlatform('android')
     jest.spyOn(console, 'error').mockImplementation(() => {})
@@ -41,6 +44,17 @@ describe('getMazeRunnerAddress', () => {
 
     await expect(getMazeRunnerAddress()).resolves.toBe('10.0.0.1:9339')
     expect(mockReadFile).toHaveBeenCalledWith(ANDROID_TMP_CONFIG)
+  })
+
+  it('ignores a stale config file until a new one is written', async () => {
+    mockExists.mockResolvedValue(true)
+    mockStat
+      .mockResolvedValueOnce({ lastModified: Date.now() - 60001 })
+      .mockResolvedValue({ lastModified: Date.now() })
+    mockReadFile.mockResolvedValue('{"maze_address":"10.0.0.1:9339"}')
+
+    await expect(getMazeRunnerAddress()).resolves.toBe('10.0.0.1:9339')
+    expect(mockReadFile).toHaveBeenCalledTimes(1)
   })
 
   it('falls back to the external files directory when /data/local/tmp is unreadable', async () => {

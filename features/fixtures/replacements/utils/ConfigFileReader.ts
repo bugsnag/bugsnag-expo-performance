@@ -5,6 +5,8 @@ const TIMEOUT = 60000
 const POLL_INTERVAL = 500
 const CONFIG_FILE_NAME = 'fixture_config.json'
 const FALLBACK_ADDRESS = 'localhost:9339'
+// BitBar keeps /data/local/tmp between sessions, so older files may belong to a previous run
+const MAX_CONFIG_AGE_BEFORE_START = 60000
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
@@ -16,11 +18,16 @@ const getCandidateDirectories = () =>
     ? ['/data/local/tmp', '/sdcard/Android/data/com.bugsnag.expo.fixture/files']
     : [Dirs.DocumentDir]
 
-const readMazeRunnerAddress = async (directory: string) => {
+const readMazeRunnerAddress = async (directory: string, startTime: number) => {
   const configFilePath = `${directory}/${CONFIG_FILE_NAME}`
 
   try {
     if (!(await FileSystem.exists(configFilePath))) {
+      return undefined
+    }
+
+    const { lastModified } = await FileSystem.stat(configFilePath)
+    if (lastModified < startTime - MAX_CONFIG_AGE_BEFORE_START) {
       return undefined
     }
 
@@ -42,7 +49,7 @@ export const getMazeRunnerAddress = async () => {
 
   while (Date.now() - startTime < TIMEOUT) {
     for (const directory of getCandidateDirectories()) {
-      const mazeAddress = await readMazeRunnerAddress(directory)
+      const mazeAddress = await readMazeRunnerAddress(directory, startTime)
 
       if (mazeAddress) {
         console.error(

@@ -8,16 +8,16 @@ steps:
   #
   - label: ":android: Build Expo APK"
     key: "build-expo-apk"
-    timeout_in_minutes: 30
+    timeout_in_minutes: 60
     agents:
       queue: "macos-15"
     env:
       JAVA_VERSION: "17"
       NODE_VERSION: "22"
-      EXPO_VERSION: "57"
+      EXPO_VERSION: "58"
       BUILD_ANDROID: "true"
     artifact_paths:
-      - "features/fixtures/generated/57/test-fixture/output.apk"
+      - "features/fixtures/generated/58/test-fixture/output.apk"
     commands:
       - "node features/scripts/generate-fixture.js"
     retry:
@@ -27,15 +27,15 @@ steps:
 
   - label: ":ios: Build Expo IPA"
     key: "build-expo-ipa"
-    timeout_in_minutes: 30
+    timeout_in_minutes: 60
     agents:
       queue: "macos-15"
     env:
       NODE_VERSION: "22"
-      EXPO_VERSION: "57"
+      EXPO_VERSION: "58"
       BUILD_IOS: "true"
     artifact_paths:
-      - "features/fixtures/generated/57/test-fixture/output.ipa"
+      - "features/fixtures/generated/58/test-fixture/output.ipa"
     commands:
       - "gem uninstall json -v '>= 3.0.0' --all --executables --force || true"
       - "gem install json -v '2.10.1' --no-document"
@@ -51,10 +51,10 @@ steps:
   #
   - label: ":bitbar: :android: Expo Android end-to-end tests"
     depends_on: "build-expo-apk"
-    timeout_in_minutes: 20
+    timeout_in_minutes: 30
     plugins:
       artifacts#v1.9.0:
-        download: "features/fixtures/generated/57/test-fixture/output.apk"
+        download: "features/fixtures/generated/58/test-fixture/output.apk"
         upload:
           - "./features/maze_output/failed/*"
           - "./features/maze_output/maze_output.zip"
@@ -63,7 +63,7 @@ steps:
         run: "expo-maze-runner"
         service-ports: true
         command:
-          - "--app=/app/features/fixtures/generated/57/test-fixture/output.apk"
+          - "--app=/app/features/fixtures/generated/58/test-fixture/output.apk"
           - "--farm=bb"
           - "--device=ANDROID_13|ANDROID_14|ANDROID_15"
           - "--a11y-locator"
@@ -73,7 +73,7 @@ steps:
           - "--aws-public-ip"
           - '--capabilities={"appium:appPackage":"com.bugsnag.expo.fixture","appium:appActivity":"com.bugsnag.expo.fixture.MainActivity","appium:appWaitActivity":"*"}'
     env:
-      EXPO_VERSION: 57
+      EXPO_VERSION: 58
     retry:
       automatic:
         - exit_status: 103  # Appium session failed
@@ -84,10 +84,10 @@ steps:
 
   - label: ":bitbar: :mac: Expo iOS end-to-end tests"
     depends_on: "build-expo-ipa"
-    timeout_in_minutes: 20
+    timeout_in_minutes: 30
     plugins:
       artifacts#v1.9.0:
-        download: "features/fixtures/generated/57/test-fixture/output.ipa"
+        download: "features/fixtures/generated/58/test-fixture/output.ipa"
         upload:
           - "./features/maze_output/failed/*"
           - "./features/maze_output/maze_output.zip"
@@ -96,7 +96,7 @@ steps:
         run: "expo-maze-runner"
         service-ports: true
         command:
-          - "--app=/app/features/fixtures/generated/57/test-fixture/output.ipa"
+          - "--app=/app/features/fixtures/generated/58/test-fixture/output.ipa"
           - "--farm=bb"
           - "--device=IOS_14|IOS_15|IOS_16|IOS_17|IOS_18|IOS_26"
           - "--a11y-locator"
@@ -106,7 +106,7 @@ steps:
           - "--aws-public-ip"
           - '--capabilities={"appium:bundleId":"com.bugsnag.expo.fixture"}'
     env:
-      EXPO_VERSION: 57
+      EXPO_VERSION: 58
     retry:
       automatic:
         - exit_status: 103  # Appium session failed
