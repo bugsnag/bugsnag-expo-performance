@@ -1,5 +1,10 @@
 # Changelog
 
+
+## [Unreleased]
+
+- Support Expo SDK 58 in a single release.
+
 ## [57.0.1] (2025-09-23)  
 
 - Fixed vulnerability issues.
