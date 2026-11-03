@@ -1,7 +1,7 @@
 # Changelog
 
 
-## [58.0.0] [2026-11-03]
+## [58.0.0] (2026-11-03)
 
 - Support Expo SDK 58 in a single release. [https://github.com/bugsnag/bugsnag-expo-performance/pull/42]
 
