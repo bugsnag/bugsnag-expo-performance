@@ -62,7 +62,7 @@
     "picomatch": "^2.3.2",
     "lodash": "^4.18.1",
     "tar": "^7.5.10",
-    "node-forge": "^1.4.1",
+    "node-forge": "^1.4.3",
     "minimatch@10.2.1": "10.2.6",
     "brace-expansion@^1.0.0": "^1.1.21",
     "brace-expansion@^2.0.0": "^2.1.7",
